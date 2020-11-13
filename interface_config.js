@@ -195,8 +195,25 @@ var interfaceConfig = {
         'fodeviceselection', 'hangup', 'profile', 'chat', 'recording',
         'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
         'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
-        'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone', 'security'
+        'tileview', 'videobackgroundblur', 'download', 'help', 'mute-everyone', 'security',
+
+        'quidlab-vote', 'quidlab-quorom', 'quidlab-download'
     ],
+
+    QUIDLAB : {
+        vote: {
+            icon: 'https://agmdev.azurewebsites.net/img/vote_v.png',
+            url: 'https://agmdev.azurewebsites.net/login.php'
+        },
+        quorom: {
+            icon: 'https://agmdev.azurewebsites.net/img/vote_v.png',
+            url: 'https://agmdev.azurewebsites.net/login.php'
+        },
+        download: {
+            icon: 'https://agmdev.azurewebsites.net/img/vote_v.png',
+            url: 'https://agmdev.azurewebsites.net/login.php'
+        }
+    },
 
     TOOLBAR_TIMEOUT: 4000,
 

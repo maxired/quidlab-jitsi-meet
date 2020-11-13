@@ -35,7 +35,7 @@ import { OverflowMenuItem } from '../../../base/toolbox/components';
 import { getLocalVideoTrack, toggleScreensharing } from '../../../base/tracks';
 import { isVpaasMeeting } from '../../../billing-counter/functions';
 import { VideoBlurButton } from '../../../blur';
-import { CHAT_SIZE, ChatCounter, toggleChat } from '../../../chat';
+import { CHAT_SIZE, ChatCounter, toggleChat, openChat } from '../../../chat';
 import { EmbedMeetingDialog } from '../../../embed-meeting';
 import { SharedDocumentButton } from '../../../etherpad';
 import { openFeedbackDialog } from '../../../feedback';
@@ -84,6 +84,8 @@ import MuteEveryoneButton from './MuteEveryoneButton';
 import OverflowMenuButton from './OverflowMenuButton';
 import OverflowMenuProfileItem from './OverflowMenuProfileItem';
 import ToolbarButton from './ToolbarButton';
+import PngToolbarButton from './PngToolbarButton';
+
 import VideoSettingsButton from './VideoSettingsButton';
 
 /**
@@ -95,6 +97,8 @@ type Props = {
      * Whether or not the chat feature is currently displayed.
      */
     _chatOpen: boolean,
+
+    _chatContentKey: String,
 
     /**
      * The {@code JitsiConference} for the current conference.
@@ -258,6 +262,12 @@ class Toolbox extends Component<Props, State> {
         this._onToolbarOpenLocalRecordingInfoDialog = this._onToolbarOpenLocalRecordingInfoDialog.bind(this);
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
 
+        this._doOpenDownload = this._doOpenDownload.bind(this);
+        this._doOpenVote = this._doOpenVote.bind(this);
+        this._doOpenChat = this._doOpenChat.bind(this);
+        
+        this._doOpenQuorom = this._doOpenQuorom.bind(this);
+        
         this.state = {
             windowWidth: window.innerWidth
         };
@@ -437,6 +447,39 @@ class Toolbox extends Component<Props, State> {
      */
     _doToggleChat() {
         this.props.dispatch(toggleChat());
+    }
+
+    _doOpenDownload(){
+        this.props.dispatch(openChat({
+            content : {
+                key: 'quidlab-download',
+                iframe: interfaceConfig.QUIDLAB.download.url
+            }
+        }))
+    }
+
+    _doOpenVote(){
+        this.props.dispatch(openChat({
+            content : {
+                key: 'quidlab-vote',
+                iframe: interfaceConfig.QUIDLAB.vote.url
+            }
+        }))
+    }
+
+    _doOpenChat(){
+        this.props.dispatch(openChat({
+            content: null
+        }))
+    }
+
+    _doOpenQuorom(){
+        this.props.dispatch(openChat({
+            content : {
+                key: 'quidlab-quorom',
+                iframe: interfaceConfig.QUIDLAB.quorom.url
+            }
+        }))
     }
 
     /**
@@ -1215,6 +1258,7 @@ class Toolbox extends Component<Props, State> {
     _renderToolboxContent() {
         const {
             _chatOpen,
+            _chatContentKey,
             _overflowMenuVisible,
             _raisedHand,
             t
@@ -1253,6 +1297,15 @@ class Toolbox extends Component<Props, State> {
 
         if (this._shouldShowButton('chat')) {
             buttonsLeft.push('chat');
+        }
+        if (this._shouldShowButton('quidlab-vote')) {
+            buttonsLeft.push('quidlab-vote');
+        }
+        if (this._shouldShowButton('quidlab-quorom')) {
+            buttonsLeft.push('quidlab-quorom');
+        }
+        if (this._shouldShowButton('quidlab-download')) {
+            buttonsLeft.push('quidlab-download');
         }
         if (this._shouldShowButton('desktop')
                 && this._isDesktopSharingButtonVisible()) {
@@ -1312,7 +1365,6 @@ class Toolbox extends Component<Props, State> {
 
         overflowMenuContent.splice(
             1, 0, ...this._renderMovedButtons(movedButtons));
-
         return (
             <div className = 'toolbox-content'>
                 <div className = 'button-group-left'>
@@ -1321,10 +1373,37 @@ class Toolbox extends Component<Props, State> {
                             <ToolbarButton
                                 accessibilityLabel = { t('toolbar.accessibilityLabel.chat') }
                                 icon = { IconChat }
-                                onClick = { this._onToolbarToggleChat }
-                                toggled = { _chatOpen }
+                                onClick = { _chatOpen && _chatContentKey === null ? this._onToolbarToggleChat : this._doOpenChat }
+                                toggled = { _chatOpen && _chatContentKey === null }
                                 tooltip = { t('toolbar.chat') } />
                             <ChatCounter />
+                        </div> }
+                    { buttonsLeft.indexOf('quidlab-vote') !== -1
+                        && <div className = 'toolbar-button-with-badge'>
+                            <PngToolbarButton
+                                accessibilityLabel = { t('toolbar.accessibilityLabel.quidlab-vote') }
+                                icon = { interfaceConfig.QUIDLAB.vote.icon }
+                                onClick = { _chatOpen && _chatContentKey === 'quidlab-vote' ? this._onToolbarToggleChat : this._doOpenVote }
+                                toggled = { _chatOpen && _chatContentKey === 'quidlab-vote'}
+                                tooltip = { t('toolbar.quidlab-vote') } />
+                        </div> }
+                    { buttonsLeft.indexOf('quidlab-quorom') !== -1
+                        && <div className = 'toolbar-button-with-badge'>
+                            <PngToolbarButton
+                                accessibilityLabel = { t('toolbar.accessibilityLabel.quidlab-quorom') }
+                                icon = { interfaceConfig.QUIDLAB.quorom.icon }
+                                onClick = { _chatOpen && _chatContentKey === 'quidlab-quorom' ? this._onToolbarToggleChat : this._doOpenQuorom }
+                                toggled = { _chatOpen && _chatContentKey === 'quidlab-quorom'}
+                                tooltip = { t('toolbar.quidlab-quorom') } />
+                        </div> }
+                    { buttonsLeft.indexOf('quidlab-download') !== -1
+                        && <div className = 'toolbar-button-with-badge'>
+                            <PngToolbarButton
+                                accessibilityLabel = { t('toolbar.accessibilityLabel.quidlab-download') }
+                                icon = { interfaceConfig.QUIDLAB.download.icon }
+                                onClick = { _chatOpen && _chatContentKey === 'quidlab-download' ? this._onToolbarToggleChat : this._doOpenDownload }
+                                toggled = { _chatOpen && _chatContentKey === 'quidlab-download'}
+                                tooltip = { t('toolbar.quidlab-download') } />
                         </div> }
                     { buttonsLeft.indexOf('desktop') !== -1
                         && this._renderDesktopSharingButton() }
@@ -1442,6 +1521,7 @@ function _mapStateToProps(state) {
 
     return {
         _chatOpen: state['features/chat'].isOpen,
+        _chatContentKey: state['features/chat'].content?.key ?? null,
         _conference: conference,
         _desktopSharingEnabled: desktopSharingEnabled,
         _desktopSharingDisabledTooltipKey: desktopSharingDisabledTooltipKey,

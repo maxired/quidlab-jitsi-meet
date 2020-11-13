@@ -16,6 +16,8 @@ export type Props = {
      */
     _isOpen: boolean,
 
+    _content: Object,
+
     /**
      * All the chat messages in the conference.
      */
@@ -102,11 +104,12 @@ export function _mapDispatchToProps(dispatch: Dispatch<any>) {
  * }}
  */
 export function _mapStateToProps(state: Object) {
-    const { isOpen, messages } = state['features/chat'];
+    const { isOpen, content, messages } = state['features/chat'];
     const _localParticipant = getLocalParticipant(state);
 
     return {
         _isOpen: isOpen,
+        _content: content,
         _messages: messages,
         _showNamePrompt: !_localParticipant.name
     };

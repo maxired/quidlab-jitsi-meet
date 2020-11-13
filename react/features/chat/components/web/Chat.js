@@ -110,6 +110,11 @@ class Chat extends AbstractChat<Props> {
      * @returns {ReactElement}
      */
     _renderChat() {
+
+        if(this.props._content && this.props._content.iframe){
+            return <iframe src={this.props._content.iframe} style={{ height : 'calc(100vh - 70px)'}} width="375px" />
+        }
+
         return (
             <>
                 <MessageContainer

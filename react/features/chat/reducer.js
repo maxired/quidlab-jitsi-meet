@@ -7,12 +7,14 @@ import {
     ADD_MESSAGE,
     CLEAR_MESSAGES,
     SET_PRIVATE_MESSAGE_RECIPIENT,
-    TOGGLE_CHAT
+    TOGGLE_CHAT,
+    OPEN_CHAT
 } from './actionTypes';
 import { CHAT_VIEW_MODAL_ID } from './constants';
 
 const DEFAULT_STATE = {
     isOpen: false,
+    content: null,
     lastReadMessage: undefined,
     messages: [],
     privateMessageRecipient: undefined
@@ -72,7 +74,14 @@ ReducerRegistry.register('features/chat', (state = DEFAULT_STATE, action) => {
         };
 
     case TOGGLE_CHAT:
-        return updateChatState(state);
+        return updateChatState(state, action);
+    
+    case OPEN_CHAT:
+        return {
+            ...state,
+            isOpen: true,
+            content: action.content
+        };
     }
 
     return state;
@@ -84,12 +93,13 @@ ReducerRegistry.register('features/chat', (state = DEFAULT_STATE, action) => {
  * @param {Object} state - The Redux state of the feature.
  * @returns {Object}
  */
-function updateChatState(state) {
+function updateChatState(state, action) {
     return {
         ...state,
         isOpen: !state.isOpen,
         lastReadMessage: state.messages[
             navigator.product === 'ReactNative' ? 0 : state.messages.length - 1],
-        privateMessageRecipient: state.isOpen ? undefined : state.privateMessageRecipient
+        privateMessageRecipient: state.isOpen ? undefined : state.privateMessageRecipient,
+        ...( action ? { content : action.content } : {})
     };
 }
