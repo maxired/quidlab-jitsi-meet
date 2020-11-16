@@ -200,8 +200,8 @@ var interfaceConfig = {
         'quidlab-vote', 'quidlab-quorom', 'quidlab-download'
     ],
 
-    QUIDLAB : {
-        vote: {
+    TOOLBAR_QUIDLAB: {
+        download: {
             icon: 'https://agmdev.azurewebsites.net/img/vote_v.png',
             url: 'https://agmdev.azurewebsites.net/login.php'
         },
@@ -209,7 +209,7 @@ var interfaceConfig = {
             icon: 'https://agmdev.azurewebsites.net/img/vote_v.png',
             url: 'https://agmdev.azurewebsites.net/login.php'
         },
-        download: {
+        vote: {
             icon: 'https://agmdev.azurewebsites.net/img/vote_v.png',
             url: 'https://agmdev.azurewebsites.net/login.php'
         }
