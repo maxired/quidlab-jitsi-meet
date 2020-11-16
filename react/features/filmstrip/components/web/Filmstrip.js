@@ -344,6 +344,10 @@ class Filmstrip extends Component <Props> {
         const icon = this.props._visible ? IconMenuDown : IconMenuUp;
         const { t } = this.props;
 
+        if (!interfaceConfig.TOOLBAR_HIDE_FILMSTRIP_BUTTON) {
+            return null;
+        }
+
         return (
             <div className = 'filmstrip__toolbar'>
                 <button

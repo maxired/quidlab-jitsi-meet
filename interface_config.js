@@ -200,6 +200,8 @@ var interfaceConfig = {
         'quidlab-vote', 'quidlab-quorom', 'quidlab-download'
     ],
 
+    TOOLBAR_HIDE_FILMSTRIP_BUTTON: true,
+
     TOOLBAR_QUIDLAB: {
         download: {
             icon: 'https://agmdev.azurewebsites.net/img/vote_v.png',
