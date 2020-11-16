@@ -1149,6 +1149,7 @@ class Toolbox extends Component<Props, State> {
     _renderMovedButtons(movedButtons) {
         const {
             _chatOpen,
+            _chatContentKey,
             _raisedHand,
             t
         } = this.props;
@@ -1217,6 +1218,33 @@ class Toolbox extends Component<Props, State> {
                         key = 'localrecording'
                         onClick = { this._onToolbarOpenLocalRecordingInfoDialog }
                         text = { t('localRecording.dialogTitle') } />
+                );
+            case 'quidlab-vote':
+                return (
+                    <OverflowMenuItem
+                        accessibilityLabel = { t('toolbar.accessibilityLabel.quidlab-vote') }
+                        icon = { () => <img src = {interfaceConfig.QUIDLAB.vote.icon} /> }
+                        key = 'quidlab-vote'
+                        onClick = { _chatOpen && _chatContentKey === 'quidlab-vote' ? this._onToolbarToggleChat : this._doOpenVote }
+                        text = { t('toolbar.quidlab-vote') } />
+                );
+            case 'quidlab-quorom':
+                return (
+                    <OverflowMenuItem
+                        accessibilityLabel = { t('toolbar.accessibilityLabel.quidlab-quorom') }
+                        icon = { () => <img src = {interfaceConfig.QUIDLAB.quorom.icon} /> }
+                        key = 'quidlab-quorom'
+                        onClick = { _chatOpen && _chatContentKey === 'quidlab-quorom' ? this._onToolbarToggleChat : this._doOpenQuorom }
+                        text = { t('toolbar.quidlab-quorom') } />
+                );
+            case 'quidlab-download':
+                return (
+                    <OverflowMenuItem
+                        accessibilityLabel = { t('toolbar.accessibilityLabel.quidlab-download') }
+                        icon = { () => <img src = {interfaceConfig.QUIDLAB.download.icon} /> }
+                        key = 'quidlab-download'
+                        onClick = { _chatOpen && _chatContentKey === 'quidlab-download' ? this._onToolbarToggleChat : this._doOpenDownload }
+                        text = { t('toolbar.quidlab-download') } />
                 );
             default:
                 return null;
@@ -1365,6 +1393,7 @@ class Toolbox extends Component<Props, State> {
 
         overflowMenuContent.splice(
             1, 0, ...this._renderMovedButtons(movedButtons));
+
         return (
             <div className = 'toolbox-content'>
                 <div className = 'button-group-left'>
